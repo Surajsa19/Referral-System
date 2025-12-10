@@ -84,3 +84,41 @@ Tracks the status of specific referral relationships.
     - User A gets +2 Credits.
     - User B gets +2 Credits.
     - Status updates to `converted`.
+
+## 7. UML Sequence Diagram (Referral Flow)
+
+```mermaid
+sequenceDiagram
+    participant UserA as Referrer (User A)
+    participant UserB as Referee (User B)
+    participant Client as Frontend
+    participant Server as Backend API
+    participant DB as MongoDB
+
+    Note over UserA, Client: User A gets referral link
+    UserA->>Client: Copy Referral Link
+    Client-->>UserA: Link Copied
+
+    Note over UserA, UserB: User A shares link with User B
+    UserA->>UserB: Share Link
+
+    Note over UserB, Server: User B Registration
+    UserB->>Client: Open Link & Register
+    Client->>Server: POST /auth/register (code=REF123)
+    Server->>DB: Check Referral Code
+    DB-->>Server: Valid Referrer (User A)
+    Server->>DB: Create User B & ReferralTracking (Pending)
+    Server-->>Client: Registration Success
+
+    Note over UserB, DB: Conversion Event
+    UserB->>Client: Click "Buy Now"
+    Client->>Server: POST /api/purchase
+    Server->>DB: Check First Purchase
+    alt First Purchase & Referred
+        Server->>DB: Update Tracking (Converted)
+        Server->>DB: Add Credits to User A (+2)
+        Server->>DB: Add Credits to User B (+2)
+        Server->>DB: Set User B hasPurchased=true
+    end
+    Server-->>Client: Purchase Success (+2 Credits)
+```
