@@ -3,6 +3,13 @@
 A full-stack referral system built with **Next.js**, **Express**, **TypeScript**, and **MongoDB**.
 Designed to simulate a digital product platform where users earn credits for referring friends.
 
+
+## Live Demo
+🚀 **[View Live Application](https://filesure-suraj.vercel.app/)**
+
+![Landing Page](./assets/landing_preview.png)
+![Dashboard](./assets/dashboard_preview.png)
+
 ## Features
 - **User Authentication**: Secure Login/Register with JWT.
 - **Referral System**: Unique referral links, tracking of referred users.
